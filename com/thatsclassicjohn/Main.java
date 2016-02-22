@@ -1,7 +1,7 @@
 package edu.wgu.project;
 
-import edu.wgu.project.constructors.Roster;
-import edu.wgu.project.constructors.Student;
+import com.thatsclassicjohn.constructors.Roster;
+import com.thatsclassicjohn.constructorsStudent;
 
   public class Main {
     public static void main(String[] args) {
