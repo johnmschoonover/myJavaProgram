@@ -1,0 +1,97 @@
+package com.example.constructors;
+
+import java.util.Arrays;
+import java.util.regex.Pattern;
+
+/** Program Requirements
+ * The Roster Class should fill the following requirements:
+ *
+ * public static void remove(String studentID) that removes students from the roster by student ID
+ *      Note: If the student ID doesn’t exist, the method should print an error message indicating that it is not found.
+ * public static void print_all() that prints a complete tab-separated list of student data using accessor methods
+ * public static void print_average_grade(String studentID) that correctly prints a student’s average grade by student ID
+ * public static void print_invalid_emails() that verifies student e-mail addresses and displays all invalid e-mail addresses to the user
+ */
+
+public class Roster {
+
+    static int findStudentID (String requestedID) {
+        //This will return the int for the actual iteration inside the list to find a student by ID
+        int iteration = 0; //This will find the index number to return to the proper int areas
+        for (int i = 0; i < Student.studentList.size(); i++) {
+            if (Student.studentList.get(i).getID().equals(requestedID)) {
+                return iteration;
+
+            } else if (iteration + 1 == Student.studentList.size()) {
+                System.out.println("That student ID doesn't exist. The program is now ending.");
+                System.exit(1);
+                break;
+            } else {
+                iteration++;
+            }
+        }
+        return 0;
+    }
+    public static void remove (String studentID) {
+        //Removes students from the roster by student ID
+        Student.studentList.remove(findStudentID(studentID));
+        System.out.println("Student #" + studentID + " - REMOVED.\n");
+    }
+    public static void print_all () {
+        //Prints a complete tab-separated list of student data using accessor methods
+        for (int individual = 0; individual < Student.studentList.size(); individual++) {
+            // For each student in the studentList, print all of their informational items.
+            System.out.println(
+                                        Student.studentList.get(individual).getID()          + "\t" +
+                    "First Name: "  +   Student.studentList.get(individual).getFirstName()   + "\t" +
+                    "Last Name: "   +   Student.studentList.get(individual).getLastName()    + "\t" +
+                    //My last name is too long for the tab-based organization to work but it does function as intended.
+                    "Age: "         +   Student.studentList.get(individual).getAge()         + "\t" +
+                    "Grades: "      +   Arrays.toString(Student.studentList.get(individual).getScores())
+                    //This will convert the protected array to a string and print out all three bracketed scores.
+                    // I used this in Student to print an individual's grades under the printers
+            ); // Prints a Tab-separated list of all student objects.
+        }
+
+    }
+    public static void print_average_grade (String studentID){
+        /*This method will effectively translate a string studentID into the proper iteration inside the studentList,
+          calculate the average over the iterated scores, and return a printed line of the result.                   */
+        float scoreSum = 0;
+        float average;
+        int scoreListLength = Student.studentList.get(findStudentID(studentID)).getScores().length;
+        // This is used for clarity in code
+        for (int i = 0; i < scoreListLength; i++) {
+            // for every score in the ScoreList, add the total to the 0-initialized scoreSum
+            scoreSum += Student.studentList.get(findStudentID(studentID)).getScores()[i] ;
+        }
+        //Calculate the Average and print the result when this method is called.
+        average = scoreSum / scoreListLength;
+        System.out.println("Student #" + studentID + " - Average Score: " + average);
+    }
+    //<editor-fold desc="Print Invalid Emails">
+
+    private static String emailPattern = "^[a-zA-Z0-9_.]+@[a-zA-Z0-9]+\\.[a-zA-Z0-9]+";
+    // The emailPattern was defined for a simpler view of code where it is used.
+    private static boolean checkEmail (String testEmail) {
+        boolean properEmail = Pattern.matches(emailPattern, testEmail);
+        return properEmail;
+    }
+    public static void print_invalid_emails(){
+        //This method will print the invalid emails based on whether the pattern matches.
+        // Pattern checking is handled by the boolean checkEmail.
+        System.out.println("\nInvalid Email's :");
+        //Header to separate information
+        int studentListLength = Student.studentList.size();
+        System.out.println("\n Invalid Email Addresses :");
+        for (int i = 0; i < studentListLength; i++) {
+            // for every email address in Student.studentList check the email. If it doesn't match the pattern, output to console.
+            if (!checkEmail(Student.studentList.get(i).getEmail())) {
+                System.out.println("Student #" + Student.studentList.get(i).getID() + " -- " + Student.studentList.get(i).getEmail());
+                //Format : Student #n -- example@domain.com (omitting whatever piece they left out.)
+            }
+        }
+        System.out.println("\n");
+    }
+    //</editor-fold>
+}
