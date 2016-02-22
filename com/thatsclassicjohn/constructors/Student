@@ -1,0 +1,90 @@
+package com.thatsclassicjohn.constructors;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+
+/**
+ * This class facilitates creation of 'student' objects for use in the roster and for pulling information.
+ * Bytes are used for StudentID and Age as these will not be >127.
+ * The constructor requires all six input parameters as prescribed in the rubric.
+ */
+public class Student {
+    private String  studentID;
+    private String  firstName;
+    private String  lastName;
+    private String  eMail;
+    private byte    age;
+    private int[]   grades;
+    public static ArrayList<Student> studentList = new ArrayList<Student>();
+
+    private Student(String studentID, String firstName, String lastName, String eMail, byte age, int[] grades) {
+        this.studentID   = studentID;
+        this.firstName   = firstName;
+        this.lastName    = lastName;
+        this.eMail       = eMail;
+        this.age         = age;
+        this.grades      = grades;
+    }
+
+    public static void createStudent(String studentIDNumber, String fName, String lName, String eMailAddress, byte studentAge, int[] scores) {
+        // this public class facilitates proper encapsulation AND adds the new Student object to the ArrayList studentList
+        Student student = new Student(studentIDNumber, fName, lName, eMailAddress, studentAge, scores);
+        studentList.add(student);
+    }
+
+    //<editor-fold desc="Getter's">
+    //The getter's have no modifier as they'll only be used within the package.
+    String   getID()         {return studentID;}
+    String   getFirstName()  {return firstName;}
+    String   getLastName()   {return lastName;}
+    String   getEmail()      {return eMail;}
+    int      getAge ()       {return age;}
+    int []   getScores ()    {return grades;}
+    //</editor-fold>
+
+    //<editor-fold desc="Setter's">
+    //Setters are public static as they should be able to be used from Main
+    public static void setStudentID (String studentID, String newID)      {
+        studentList.get(Roster.findStudentID(studentID)).studentID = newID;
+    }
+    public static void setFirstName (String studentID, String newFName)   {
+        studentList.get(Roster.findStudentID(studentID)).firstName = newFName;
+    }
+    public static void setLastName  (String studentID, String newLName)   {
+        studentList.get(Roster.findStudentID(studentID)).lastName = newLName;
+    }
+    public static void setEmail     (String studentID, String newEmail)   {
+        studentList.get(Roster.findStudentID(studentID)).eMail = newEmail;
+    }
+    public static void setAge       (String studentID, byte newAge)       {
+        studentList.get(Roster.findStudentID(studentID)).age = newAge;
+    }
+    public static void setGrades    (String studentID, int [] newGrades)  {
+        studentList.get(Roster.findStudentID(studentID)).grades = newGrades;
+    }
+
+    //</editor-fold>
+
+    //<editor-fold desc="Printer's">
+    //I made these methods Static so as to make them available without instantiation.
+    //No Printer for StudentID as the string it prints will be the string you type, otherwise it follows the template below.
+    public static void printFirstName      (String studentID) {
+        System.out.println(studentList.get(Roster.findStudentID(studentID)).getFirstName());
+    }
+    public static void printLastName     (String studentID) {
+        System.out.println(studentList.get(Roster.findStudentID(studentID)).getLastName());
+    }
+    public static void printEmail        (String studentID) {
+        System.out.println(studentList.get(Roster.findStudentID(studentID)).getEmail());
+    }
+    public static void printAge          (String studentID) {
+        System.out.println(studentList.get(Roster.findStudentID(studentID)).getAge());
+    }
+    public static void printGrades       (String studentID) {
+        System.out.println(Arrays.toString(Student.studentList.get(Roster.findStudentID(studentID)).getScores()));
+    }
+
+    //</editor-fold>
+
+
+}
