@@ -1,4 +1,4 @@
-package com.thatsclassicjohn.constructors;
+package com.example.constructors;
 
 import java.util.ArrayList;
 import java.util.Arrays;
